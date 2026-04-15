@@ -12,3 +12,6 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+# 3D modeling software (separate project)
+3d_modeling_software/
