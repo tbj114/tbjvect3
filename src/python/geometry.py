@@ -7,13 +7,31 @@ import platform
 # 根据平台选择正确的库扩展名
 if platform.system() == 'Windows':
     lib_extension = '.dll'
+    # 在Windows上，库文件可能在build/Release目录中
+    lib_path1 = os.path.join(os.path.dirname(__file__), f'../../build/Release/geometry{lib_extension}')
+    lib_path2 = os.path.join(os.path.dirname(__file__), f'../../build/geometry{lib_extension}')
+    lib_path3 = os.path.join(os.path.dirname(__file__), f'../../build/libgeometry{lib_extension}')
 elif platform.system() == 'Darwin':
     lib_extension = '.dylib'
+    lib_path1 = os.path.join(os.path.dirname(__file__), f'../../build/libgeometry{lib_extension}')
+    lib_path2 = os.path.join(os.path.dirname(__file__), f'../../build/geometry{lib_extension}')
+    lib_path3 = None
 else:
     lib_extension = '.so'
+    lib_path1 = os.path.join(os.path.dirname(__file__), f'../../build/libgeometry{lib_extension}')
+    lib_path2 = os.path.join(os.path.dirname(__file__), f'../../build/geometry{lib_extension}')
+    lib_path3 = None
 
-lib_path = os.path.join(os.path.dirname(__file__), f'../../build/libgeometry{lib_extension}')
-lib = ctypes.CDLL(lib_path)
+# 尝试不同的路径
+lib = None
+for path in [lib_path1, lib_path2, lib_path3]:
+    if path and os.path.exists(path):
+        lib = ctypes.CDLL(path)
+        print(f"Loaded library from: {path}")
+        break
+
+if lib is None:
+    raise FileNotFoundError("Could not find the geometry library. Please build the library first.")
 
 # 定义C兼容的向量结构
 class Vector3D(ctypes.Structure):
