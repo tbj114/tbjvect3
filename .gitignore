@@ -1,17 +1,24 @@
-# Build files
+# 编译产物
 build/
+*.so
+*.dll
+*.dylib
 
-# Python cache
+# Python 包生成的目录
+*.egg-info/
 __pycache__/
-*.pyc
 
-# IDE files
+# IDE 配置文件
 .vscode/
 .idea/
 
-# OS files
+# 临时文件
+*.tmp
+*.temp
+
+# 日志文件
+*.log
+
+# 操作系统文件
 .DS_Store
 Thumbs.db
-
-# 3D modeling software (separate project)
-3d_modeling_software/
